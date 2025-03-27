@@ -1,0 +1,13 @@
+template-file-path: project-part2.yaml
+parameters:
+  PrivateSubnet1Cidr: 10.0.3.0/24
+  PublicSubnet2Cidr: 10.0.2.0/24
+  DBPassword: '****'
+  VpcCidr: 10.0.0.0/16
+  DBAllocatedStorage: '20'
+  PrivateSubnet2Cidr: 10.0.4.0/24
+  DBInstanceClass: db.t3.medium
+  DBName: mydatabase
+  DBUser: dbuser
+  PublicSubnet1Cidr: 10.0.1.0/24
+tags: {}
