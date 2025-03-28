@@ -230,6 +230,21 @@ Resources:
       Tags:
         - Key: Environment
           Value: Production
+  
+  DBCredentialsSecret1:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: "newrdscreds"
+      Description: "Database credentials for the RDS PostgreSQL instance"
+      SecretString: !Sub |
+        {
+          "username": "${DBUser}",
+          "password": "${DBPassword}",
+          "dbname": "${DBName}"
+        }
+      Tags:
+        - Key: Environment
+          Value: Production
 
   MyDBInstance:
     Type: AWS::RDS::DBInstance
@@ -247,6 +262,23 @@ Resources:
       DBName: !Ref DBName
       BackupRetentionPeriod: 7
       StorageEncrypted: true
+  
+  MyDBInstance1:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      Engine: postgres
+      DBInstanceClass: !Ref DBInstanceClass
+      AllocatedStorage: !Ref DBAllocatedStorage
+      MultiAZ: true
+      PubliclyAccessible: false
+      VPCSecurityGroups:
+        - !Ref MyRDSSecurityGroup
+      DBSubnetGroupName: !Ref MyDBSubnetGroup
+      MasterUsername: "{{resolve:secretsmanager:newrdscreds:SecretString:username}}"
+      MasterUserPassword: "{{resolve:secretsmanager:newrdscreds:SecretString:password}}"
+      DBName: !Ref DBName
+      BackupRetentionPeriod: 7
+      StorageEncrypted: true
 
 
 
@@ -256,5 +288,5 @@ Outputs:
     Value: !Ref MyVPC
   RDSInstanceEndpoint:
     Description: "RDS Endpoint"
-    Value: !GetAtt MyDBInstance.Endpoint.Address
+    Value: !GetAtt MyDBInstance1.Endpoint.Address
  
