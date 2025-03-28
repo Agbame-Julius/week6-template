@@ -236,12 +236,12 @@ Resources:
     Properties:
       Name: "newrdscreds"
       Description: "Database credentials for the RDS PostgreSQL instance"
-      SecretString: !Sub |
-        {
-          "username": "${DBUser}",
-          "password": "${DBPassword}",
-          "dbname": "${DBName}"
-        }
+      GenerateSecretString:
+        SecretStringTemplate: !Sub '{
+        "username": "${DBUser},
+        "dbname": "${DBName}"}'
+        GenerateStringKey: "password"
+        PasswordLength: 8
       Tags:
         - Key: Environment
           Value: Production
