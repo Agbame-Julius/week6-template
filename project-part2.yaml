@@ -238,7 +238,7 @@ Resources:
       Description: "Database credentials for the RDS PostgreSQL instance"
       GenerateSecretString:
         SecretStringTemplate: !Sub '{
-        "username": "${DBUser},
+        "username": "${DBUser"},
         "dbname": "${DBName}"}'
         GenerateStringKey: "password"
         PasswordLength: 8
